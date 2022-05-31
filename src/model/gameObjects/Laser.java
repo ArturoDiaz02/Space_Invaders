@@ -10,10 +10,13 @@ import model.states.GameState;
 
 public class Laser extends MovingObject{
 
-	public Laser(Vector2D position, Vector2D velocity, double maxVel, double angle, BufferedImage texture, GameState gameState) {
+	private boolean id;
+
+	public Laser(Vector2D position, Vector2D velocity, double maxVel, double angle, BufferedImage texture, GameState gameState, boolean id) {
 		super(position, velocity, maxVel, texture, gameState);
 		this.angle = angle;
 		this.velocity = velocity.scale(maxVel);
+		this.id = id;
 	}
 
 	@Override
@@ -44,5 +47,8 @@ public class Laser extends MovingObject{
 	public Vector2D getCenter(){
 		return new Vector2D(position.getX() + width/2, position.getY() + width/2);
 	}
-	
+
+	public boolean isId() {
+		return id;
+	}
 }

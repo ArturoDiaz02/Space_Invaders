@@ -35,22 +35,26 @@ public abstract class MovingObject extends GameObject{
 		for(int i = 0; i < movingObjects.size(); i++){
 			
 			MovingObject m  = movingObjects.get(i);
-			
+
 			if(m.equals(this))
 				continue;
 			
 			double distance = m.getCenter().subtract(getCenter()).getMagnitude();
 			
 			if(distance < m.width/2 + width/2 && movingObjects.contains(this)){
-				objectCollision(m, this);
+				if(!(m instanceof Laser) ^ !(this instanceof Laser)){
+					objectCollision(m, this);
+				}
+
 			}
 		}
 
 	}
 	
 	private void objectCollision(MovingObject a, MovingObject b){
-		
-		if(!(a instanceof Alien && b instanceof Alien)){
+
+		if (b instanceof Laser && ((Laser) b).isId()){
+
 			gameState.playExplosion(getCenter());
 
 			for (int i = 0; i < gameState.getTHAliens().size(); i++) {
@@ -60,7 +64,15 @@ public abstract class MovingObject extends GameObject{
 			a.Destroy();
 			b.Destroy();
 
+		}else{
+			if (a instanceof Player && b instanceof Laser){
+				gameState.playExplosion(getCenter());
+				a.Destroy();
+				b.Destroy();
+			}
 		}
+		
+
 
 		
 	}

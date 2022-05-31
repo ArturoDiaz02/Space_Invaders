@@ -43,13 +43,17 @@ public class Alien extends MovingObject{
 			}
 		}
 
-		/*if ((int) (Math.random()*(1-0)) == 0){
-			gameState.getMovingObjects().add(0,new Laser(getCenter().add(heading.scale(width)), heading,
-					Constants.LASER_VEL, angle, Assets.blueLaser, gameState));
+
+		
+	}
+
+	public void shoot(){
+		if ((int) (Math.random()*(10-1) + 1) % 5 == 0) {
+			gameState.getMovingObjects().add(new Laser(getCenter().add(heading.scale(width)), heading,
+					Constants.LASER_VEL, angle, Assets.redLaser, gameState, false));
 
 			fireRate.run(Constants.FIRERATE);
-		}*/
-		
+		}
 	}
 	
 	@Override

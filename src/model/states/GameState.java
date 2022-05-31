@@ -25,9 +25,15 @@ public class GameState {
 	private int aliens;
 	
 	public GameState() {
-		player = new Player(new Vector2D(Constants.WIDTH/2 - Assets.player.getWidth()/2,
-				Constants.HEIGHT - Assets.player.getHeight()*2.5), new Vector2D(), Constants.PLAYER_MAX_VEL, Assets.player, this);
-		movingObjects.add(player);
+		BufferedImage texture = Assets.player[(int)(Math.random()*Assets.player.length)];
+
+		player = new Player(new Vector2D(Constants.WIDTH/2 - texture.getWidth()/2,
+				Constants.HEIGHT - texture.getHeight()*2.5), new Vector2D(), Constants.PLAYER_MAX_VEL, texture, this);
+
+		if(player != null){
+			movingObjects.add(player);
+		}
+
 
 		aliens = (int) (Math.random()*(40-20)) + 20;
 		
@@ -53,10 +59,12 @@ public class GameState {
 			}
 
 			alien = new Alien(new Vector2D(x, y), new Vector2D(0, 1), Constants.METEOR_VEL*Math.random() + 1, texture, this);
-			th = new THAlien(alien);
-			THAliens.add(th);
-			movingObjects.add(alien);
 
+			if(alien != null){
+				th = new THAlien(alien);
+				THAliens.add(th);
+				movingObjects.add(alien);
+			}
 
 			vx = x;
 		}
@@ -118,4 +126,7 @@ public class GameState {
 		return THAliens;
 	}
 
+	public Player getPlayer() {
+		return player;
+	}
 }
