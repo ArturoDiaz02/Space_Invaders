@@ -4,10 +4,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import model.gameObjects.Constants;
 import model.input.KeyBoard;
 import model.states.GameState;
+import model.threads.THAlien;
 
 public class Window extends JFrame implements Runnable{
 
@@ -27,9 +29,9 @@ public class Window extends JFrame implements Runnable{
 	
 	private GameState gameState;
 	private KeyBoard keyBoard;
+	private boolean alienCreate = true;
 	
-	public Window()
-	{
+	public Window() {
 		setTitle("Space Ship Game");
 		setSize(Constants.WIDTH, Constants.HEIGHT);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,8 +67,7 @@ public class Window extends JFrame implements Runnable{
 	private void draw(){
 		bs = canvas.getBufferStrategy();
 		
-		if(bs == null)
-		{
+		if(bs == null) {
 			canvas.createBufferStrategy(3);
 			return;
 		}
@@ -89,12 +90,23 @@ public class Window extends JFrame implements Runnable{
 		
 		g.dispose();
 		bs.show();
+
+		if (alienCreate) {
+			gameState.startWave(g);
+
+			for (THAlien alien : gameState.getTHAliens()) {
+				alien.start();
+			}
+
+			alienCreate = false;
+		}
+
 	}
 	
-	private void init()
-	{
+	private void init() {
 		Assets.init();
 		gameState = new GameState();
+
 	}
 	
 	
@@ -108,8 +120,7 @@ public class Window extends JFrame implements Runnable{
 		
 		init();
 		
-		while(running)
-		{
+		while(running) {
 			now = System.nanoTime();
 			delta += (now - lastTime)/TARGETTIME;
 			time += (now - lastTime);
@@ -144,6 +155,7 @@ public class Window extends JFrame implements Runnable{
 		
 		
 	}
+
 	private void stop(){
 		try {
 			thread.join();

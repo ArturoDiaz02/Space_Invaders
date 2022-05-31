@@ -45,19 +45,26 @@ public abstract class MovingObject extends GameObject{
 				objectCollision(m, this);
 			}
 		}
+
 	}
 	
 	private void objectCollision(MovingObject a, MovingObject b){
 		
 		if(!(a instanceof Alien && b instanceof Alien)){
 			gameState.playExplosion(getCenter());
+
+			for (int i = 0; i < gameState.getTHAliens().size(); i++) {
+				gameState.getTHAliens().get(i).stopThread(a);
+			}
+
 			a.Destroy();
 			b.Destroy();
+
 		}
+
 		
 	}
-	
-	
+
 	protected void Destroy(){
 		gameState.getMovingObjects().remove(this);
 	}

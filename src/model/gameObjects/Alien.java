@@ -6,15 +6,20 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import model.math.Vector2D;
 import model.states.GameState;
+import ui.Assets;
 
 public class Alien extends MovingObject{
 
 	private boolean direction;
+	private Vector2D heading;
+	private Chronometer fireRate;
 
 	public Alien(Vector2D position, Vector2D velocity, double maxVel, BufferedImage texture, GameState gameState) {
 		super(position, velocity, maxVel, texture, gameState);
 		this.velocity = velocity.scale(maxVel);
 		this.direction = true;
+		heading = new Vector2D(0, 1);
+		fireRate = new Chronometer();
 		
 	}
 
@@ -37,6 +42,13 @@ public class Alien extends MovingObject{
 				direction = true;
 			}
 		}
+
+		/*if ((int) (Math.random()*(1-0)) == 0){
+			gameState.getMovingObjects().add(0,new Laser(getCenter().add(heading.scale(width)), heading,
+					Constants.LASER_VEL, angle, Assets.blueLaser, gameState));
+
+			fireRate.run(Constants.FIRERATE);
+		}*/
 		
 	}
 	

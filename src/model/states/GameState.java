@@ -10,6 +10,7 @@ import model.gameObjects.Constants;
 import model.gameObjects.Alien;
 import model.gameObjects.MovingObject;
 import model.gameObjects.Player;
+import model.threads.THAlien;
 import ui.Animation;
 import ui.Assets;
 import model.math.Vector2D;
@@ -17,8 +18,9 @@ import model.math.Vector2D;
 public class GameState {
 	
 	private Player player;
-	private ArrayList<MovingObject> movingObjects = new ArrayList<MovingObject>();
-	private ArrayList<Animation> explosions = new ArrayList<Animation>();
+	private ArrayList<MovingObject> movingObjects = new ArrayList<>();
+	private ArrayList<Animation> explosions = new ArrayList<>();
+	private ArrayList<THAlien> THAliens = new ArrayList<>();
 	
 	private int aliens;
 	
@@ -28,32 +30,38 @@ public class GameState {
 		movingObjects.add(player);
 
 		aliens = (int) (Math.random()*(40-20)) + 20;
-		startWave();
 		
 	}
 
-	private void startWave(){
+	public ArrayList startWave(Graphics g){
 		
 		double x, y = 70, vx = 280;
 		int ARow = 0;
+		THAlien th;
+		Alien alien;
 
 		for (int i = 0; i < aliens; i++) {
 			BufferedImage texture = Assets.aliens[(int)(Math.random()*Assets.aliens.length)];
+
 			x = vx + 40;
 
 			if (i % 10 == 0) {
 				vx = 280;
 				x = vx + 40;
 				y += 40;
-				movingObjects.add(new Alien(new Vector2D(x, y), new Vector2D(0, 1),
-						Constants.METEOR_VEL*Math.random() + 1, texture, this));
-			}else {
-				movingObjects.add(new Alien(new Vector2D(x, y), new Vector2D(0, 1),
-						Constants.METEOR_VEL*Math.random() + 1, texture, this));
+
 			}
+
+			alien = new Alien(new Vector2D(x, y), new Vector2D(0, 1), Constants.METEOR_VEL*Math.random() + 1, texture, this);
+			th = new THAlien(alien);
+			THAliens.add(th);
+			movingObjects.add(alien);
+
 
 			vx = x;
 		}
+
+		return THAliens;
 
 	}
 	
@@ -67,7 +75,9 @@ public class GameState {
 	
 	public void update() {
 		for(int i = 0; i < movingObjects.size(); i++)
-			movingObjects.get(i).update();
+			if (!(movingObjects.get(i) instanceof Alien)){
+				movingObjects.get(i).update();
+			}
 		
 		for(int i = 0; i < explosions.size(); i++){
 			Animation anim = explosions.get(i);
@@ -90,6 +100,7 @@ public class GameState {
 		
 		for(int i = 0; i < movingObjects.size(); i++)
 			movingObjects.get(i).draw(g);
+
 		
 		for(int i = 0; i < explosions.size(); i++){
 			Animation anim = explosions.get(i);
@@ -102,4 +113,9 @@ public class GameState {
 	public ArrayList<MovingObject> getMovingObjects() {
 		return movingObjects;
 	}
+
+	public ArrayList<THAlien> getTHAliens() {
+		return THAliens;
+	}
+
 }
