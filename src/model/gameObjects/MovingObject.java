@@ -4,34 +4,33 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import javafx.fxml.FXML;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import model.math.Vector2D;
-import ui.FXController;
+import model.states.GameState;
 
-public abstract class MovingObject extends GameObject {
+public abstract class MovingObject extends GameObject{
 	
 	protected Vector2D velocity;
+	protected AffineTransform at;
+	protected double angle;
 	protected double maxVel;
-	protected double width;
-	protected double height;
-	protected FXController controller;
+	protected int width;
+	protected int height;
+	protected GameState gameState;
 	
-	public MovingObject(Vector2D position, Vector2D velocity, double maxVel, ImageView texture, FXController controller) {
+	public MovingObject(Vector2D position, Vector2D velocity, double maxVel, BufferedImage texture, GameState gameState) {
 		super(position, texture);
 		this.velocity = velocity;
 		this.maxVel = maxVel;
-		this.controller = controller;
-		width = texture.getFitWidth();
-		height = texture.getFitHeight();
+		this.gameState = gameState;
+		width = texture.getWidth();
+		height = texture.getHeight();
+		angle = 0;
 		
 	}
 	
 	protected void collidesWith(){
 		
-		ArrayList<MovingObject> movingObjects = controller.getMovingObjects(); 
+		ArrayList<MovingObject> movingObjects = gameState.getMovingObjects(); 
 		
 		for(int i = 0; i < movingObjects.size(); i++){
 			
@@ -51,6 +50,7 @@ public abstract class MovingObject extends GameObject {
 	private void objectCollision(MovingObject a, MovingObject b){
 		
 		if(!(a instanceof Alien && b instanceof Alien)){
+			gameState.playExplosion(getCenter());
 			a.Destroy();
 			b.Destroy();
 		}
@@ -59,11 +59,11 @@ public abstract class MovingObject extends GameObject {
 	
 	
 	protected void Destroy(){
-		controller.getMovingObjects().remove(this);
+		gameState.getMovingObjects().remove(this);
 	}
 	
 	protected Vector2D getCenter(){
 		return new Vector2D(position.getX() + width/2, position.getY() + height/2);
 	}
-
+	
 }
