@@ -4,11 +4,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-import java.util.ArrayList;
 import javax.swing.JFrame;
 import model.gameObjects.Constants;
 import model.input.KeyBoard;
+import model.input.MouseInput;
 import model.states.GameState;
+import model.states.MenuState;
+import model.states.State;
 import model.threads.THAlien;
 
 public class Window extends JFrame implements Runnable{
@@ -29,7 +31,8 @@ public class Window extends JFrame implements Runnable{
 	
 	private GameState gameState;
 	private KeyBoard keyBoard;
-	private boolean alienCreate = true;
+	private MouseInput mouseInput;
+
 	
 	public Window() {
 		setTitle("Space Ship Game");
@@ -41,7 +44,8 @@ public class Window extends JFrame implements Runnable{
 		
 		canvas = new Canvas();
 		keyBoard = new KeyBoard();
-		
+		mouseInput = new MouseInput();
+
 		canvas.setPreferredSize(new Dimension(Constants.WIDTH, Constants.HEIGHT));
 		canvas.setMaximumSize(new Dimension(Constants.WIDTH, Constants.HEIGHT));
 		canvas.setMinimumSize(new Dimension(Constants.WIDTH, Constants.HEIGHT));
@@ -49,6 +53,8 @@ public class Window extends JFrame implements Runnable{
 		
 		add(canvas);
 		canvas.addKeyListener(keyBoard);
+		canvas.addMouseListener(mouseInput);
+		canvas.addMouseMotionListener(mouseInput);
 		setVisible(true);
 	}
 	
@@ -61,7 +67,7 @@ public class Window extends JFrame implements Runnable{
 	
 	private void update(){
 		keyBoard.update();
-		gameState.update();
+		State.getCurrentState().update();
 	}
 
 	private void draw(){
@@ -80,32 +86,23 @@ public class Window extends JFrame implements Runnable{
 		
 		g.fillRect(0, 0, Constants.WIDTH, Constants.HEIGHT);
 		
-		gameState.draw(g);
+		State.getCurrentState().draw(g);
 		
 		g.setColor(Color.WHITE);
 		
 		g.drawString(""+AVERAGEFPS, 10, 20);
 		
 		//---------------------
-		
+
+		State.setGraphics(g);
 		g.dispose();
 		bs.show();
-
-		if (alienCreate) {
-			gameState.startWave(g);
-
-			for (THAlien alien : gameState.getTHAliens()) {
-				alien.start();
-			}
-
-			alienCreate = false;
-		}
 
 	}
 	
 	private void init() {
 		Assets.init();
-		gameState = new GameState();
+		State.changeState(new MenuState());
 
 	}
 	

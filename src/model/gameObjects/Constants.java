@@ -21,5 +21,9 @@ public class Constants {
 	// Alien properties
 	
 	public static final double METEOR_VEL = 2.0;
+
+	public static final String PLAY = "PLAY";
+
+	public static final String EXIT = "EXIT";
 	
 }

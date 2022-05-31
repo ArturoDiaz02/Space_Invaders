@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import model.math.Vector2D;
 import model.states.GameState;
+import ui.Assets;
+import model.music.Sound;
 
 public abstract class MovingObject extends GameObject{
 	
@@ -16,6 +18,7 @@ public abstract class MovingObject extends GameObject{
 	protected int width;
 	protected int height;
 	protected GameState gameState;
+	private Sound destroySound;
 	
 	public MovingObject(Vector2D position, Vector2D velocity, double maxVel, BufferedImage texture, GameState gameState) {
 		super(position, texture);
@@ -25,6 +28,7 @@ public abstract class MovingObject extends GameObject{
 		width = texture.getWidth();
 		height = texture.getHeight();
 		angle = 0;
+		destroySound = new Sound(Assets.explosionSound);
 		
 	}
 	
@@ -78,6 +82,10 @@ public abstract class MovingObject extends GameObject{
 	}
 
 	protected void Destroy(){
+		if(!(this instanceof Laser)){
+			destroySound.play();
+		}
+
 		gameState.getMovingObjects().remove(this);
 	}
 	

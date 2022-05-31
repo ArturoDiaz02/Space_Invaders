@@ -9,16 +9,21 @@ import ui.Assets;
 import model.input.KeyBoard;
 import model.math.Vector2D;
 import model.states.GameState;
+import model.music.Sound;
 
 public class Player extends MovingObject{
 	
 	private Vector2D heading;
 	private Chronometer fireRate;
+	private int score;
+	private Sound shootSound;
 	
 	public Player(Vector2D position, Vector2D velocity, double maxVel, BufferedImage texture, GameState gameState) {
 		super(position, velocity, maxVel, texture, gameState);
 		heading = new Vector2D(0, 1);
 		fireRate = new Chronometer();
+		score = 0;
+		shootSound = new Sound(Assets.playerShootSound);
 	}
 	
 	@Override
@@ -29,6 +34,7 @@ public class Player extends MovingObject{
 					Constants.LASER_VEL, angle, Assets.blueLaser, gameState, true));
 
 			fireRate.run(Constants.FIRERATE);
+			shootSound.play();
 		}
 
 		if(KeyBoard.RIGHT) position.setX(position.getX() + Constants.PLAYER_MAX_VEL);
@@ -58,9 +64,16 @@ public class Player extends MovingObject{
 		
 	}
 
+	public void addScore(int score) {
+		this.score += score;
+	}
+
 	@Override
 	public void Destroy(){
 		super.Destroy();
 	}
-	
+
+	public int getScore() {
+		return score;
+	}
 }

@@ -7,12 +7,14 @@ import java.awt.image.BufferedImage;
 import model.math.Vector2D;
 import model.states.GameState;
 import ui.Assets;
+import model.music.Sound;
 
 public class Alien extends MovingObject{
 
 	private boolean direction;
 	private Vector2D heading;
 	private Chronometer fireRate;
+	private Sound shootSound;
 
 	public Alien(Vector2D position, Vector2D velocity, double maxVel, BufferedImage texture, GameState gameState) {
 		super(position, velocity, maxVel, texture, gameState);
@@ -20,6 +22,7 @@ public class Alien extends MovingObject{
 		this.direction = true;
 		heading = new Vector2D(0, 1);
 		fireRate = new Chronometer();
+		shootSound = new Sound(Assets.alienShootSound);
 		
 	}
 
@@ -53,11 +56,13 @@ public class Alien extends MovingObject{
 					Constants.LASER_VEL, angle, Assets.redLaser, gameState, false));
 
 			fireRate.run(Constants.FIRERATE);
+			shootSound.play();
 		}
 	}
 	
 	@Override
 	public void Destroy(){
+		gameState.getPlayer().addScore(40);
 		super.Destroy();
 	}
 

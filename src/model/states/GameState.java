@@ -11,11 +11,11 @@ import model.gameObjects.Alien;
 import model.gameObjects.MovingObject;
 import model.gameObjects.Player;
 import model.threads.THAlien;
-import ui.Animation;
+import model.util.Animation;
 import ui.Assets;
 import model.math.Vector2D;
 
-public class GameState {
+public class GameState extends State {
 	
 	private Player player;
 	private ArrayList<MovingObject> movingObjects = new ArrayList<>();
@@ -33,7 +33,6 @@ public class GameState {
 		if(player != null){
 			movingObjects.add(player);
 		}
-
 
 		aliens = (int) (Math.random()*(40-20)) + 20;
 		
@@ -115,6 +114,18 @@ public class GameState {
 			g2d.drawImage(anim.getCurrentFrame(), (int)anim.getPosition().getX(), (int)anim.getPosition().getY(),
 					null);
 			
+		}
+
+		drawScore(g);
+	}
+
+	private void drawScore(Graphics g){
+		Vector2D pos = new Vector2D(920,25);
+
+		String score = Integer.toString(player.getScore());
+
+		for (int i = 0; i < score.length(); i++) {
+			g.drawImage(Assets.numbers[score.charAt(i) - '0'], (int)pos.getX() + i*20, (int)pos.getY(), null);
 		}
 	}
 
