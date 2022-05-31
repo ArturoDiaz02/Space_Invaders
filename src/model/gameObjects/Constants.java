@@ -25,5 +25,13 @@ public class Constants {
 	public static final String PLAY = "PLAY";
 
 	public static final String EXIT = "EXIT";
+
+	public static final String SCORE = "SCORE";
+
+	public static final String DATE = "DATE";
+
+	public static final String RETURN = "RETURN";
+
+	public static final String HIGH_SCORES = "HIGHEST SCORES";
 	
 }

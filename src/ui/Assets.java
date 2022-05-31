@@ -16,43 +16,50 @@ public class Assets {
 
 	public static BufferedImage[] numbers = new BufferedImage[11];
 
-	public static Clip backGroundMusic, explosionSound, playerShootSound, alienShootSound, playerLooseSound;
-	public static BufferedImage blueBtn;
-	public static BufferedImage greyBtn;
+	public static BufferedImage[] meteors = new BufferedImage[7];
 
-	public static Font fontMed;
+	public static Clip backGroundMusic, explosionSound, playerShootSound, alienShootSound, playerLooseSound;
+
+	public static BufferedImage blueBtn, greyBtn;
+
+	public static Font fontMed, fontBig;
 
 	public static void init() {
-		player[0] = Loader.ImageLoader("src/ui/images/ships/player.png");
+		player[0] = Loader.ImageLoader("resource/ships/player.png");
 
-		player[1] = Loader.ImageLoader("src/ui/images/ships/player2.png");
+		player[1] = Loader.ImageLoader("resource/ships/player2.png");
 		
-		blueLaser = Loader.ImageLoader("src/ui/images/lasers/laserBlue01.png");
+		blueLaser = Loader.ImageLoader("resource/lasers/laserBlue01.png");
 
-		redLaser = Loader.ImageLoader("src/ui/images/lasers/laserRed01.png");
+		redLaser = Loader.ImageLoader("resource/lasers/laserRed01.png");
 
-		fontMed = Loader.loadFont("src/ui/images/fonts/futureFont.ttf", 20);
+		fontMed = Loader.loadFont("resource/fonts/futureFont.ttf", 20);
+		fontBig = Loader.loadFont("resource/fonts/futureFont.ttf", 42);
 		
 		for(int i = 0; i < aliens.length; i++) {
-			aliens[i] = Loader.ImageLoader("src/ui/images/aliens/A" + (i + 1) + ".png");
+			aliens[i] = Loader.ImageLoader("resource/aliens/A" + (i + 1) + ".png");
 		}
 
 		for(int i = 0; i < exp.length; i++) {
-			exp[i] = Loader.ImageLoader("src/ui/images/explosion/" + i + ".png");
+			exp[i] = Loader.ImageLoader("resource/explosion/" + i + ".png");
 		}
 
 		for(int i = 0; i < numbers.length; i++) {
-			numbers[i] = Loader.ImageLoader("src/ui/images/numbers/" + i + ".png");
+			numbers[i] = Loader.ImageLoader("resource/numbers/" + i + ".png");
 		}
 
-		greyBtn = Loader.ImageLoader("src/ui/images/buttons/grey_button.png");
-		blueBtn = Loader.ImageLoader("src/ui/images/buttons/blue_button.png");
+		for(int i = 0; i < meteors.length; i++) {
+			meteors[i] = Loader.ImageLoader("resource/meteors/" + (i + 1) + ".png");
+		}
 
-		backGroundMusic = Loader.loadSound("src/ui/images/sounds/backgroundMusic.wav");
-		explosionSound = Loader.loadSound("src/ui/images/sounds/explosion.wav");
-		playerShootSound = Loader.loadSound("src/ui/images/sounds/playerShoot.wav");
-		alienShootSound = Loader.loadSound("src/ui/images/sounds/alienShoot.wav");
-		playerLooseSound = Loader.loadSound("src/ui/images/sounds/playerLoose.wav");
+		greyBtn = Loader.ImageLoader("resource/buttons/grey_button.png");
+		blueBtn = Loader.ImageLoader("resource/buttons/blue_button.png");
+
+		backGroundMusic = Loader.loadSound("resource/sounds/backgroundMusic.wav");
+		explosionSound = Loader.loadSound("resource/sounds/explosion.wav");
+		playerShootSound = Loader.loadSound("resource/sounds/playerShoot.wav");
+		alienShootSound = Loader.loadSound("resource/sounds/alienShoot.wav");
+		playerLooseSound = Loader.loadSound("resource/sounds/playerLoose.wav");
 		
 	}
 	

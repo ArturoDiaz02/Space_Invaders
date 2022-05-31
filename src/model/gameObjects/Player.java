@@ -4,7 +4,15 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
+import model.info.ScoreData;
+import model.states.ScoreState;
+import model.states.State;
 import ui.Assets;
 import model.input.KeyBoard;
 import model.math.Vector2D;
@@ -70,7 +78,22 @@ public class Player extends MovingObject{
 
 	@Override
 	public void Destroy(){
+		try {
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data/data.txt"));
+			ArrayList<ScoreData> sd = (ArrayList<ScoreData>) ois.readObject();
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("data/data.txt"));
+			sd.add(new ScoreData(score));
+			oos.writeObject(sd);
+			ois.close();
+			oos.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		super.Destroy();
+		gameState.end();
+		State.changeState(new ScoreState());
 	}
 
 	public int getScore() {

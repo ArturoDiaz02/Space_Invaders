@@ -2,10 +2,17 @@ package model.gameObjects;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import model.info.ScoreData;
 import model.math.Vector2D;
 import model.states.GameState;
+import model.states.ScoreState;
+import model.states.State;
 import ui.Assets;
 import model.music.Sound;
 
@@ -59,22 +66,55 @@ public abstract class MovingObject extends GameObject{
 
 		if (b instanceof Laser && ((Laser) b).isId()){
 
-			gameState.playExplosion(getCenter());
+			if(gameState.getAliens() > 1){
+				gameState.playExplosion(getCenter());
 
-			for (int i = 0; i < gameState.getTHAliens().size(); i++) {
-				gameState.getTHAliens().get(i).stopThread(a);
+				for (int i = 0; i < gameState.getTHAliens().size(); i++) {
+					gameState.getTHAliens().get(i).stopThread(a);
+
+				}
+
+				gameState.setAliens(gameState.getAliens() - 1);
+				a.Destroy();
+				b.Destroy();
+
+			}else{
+
+				try {
+					ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data/data.txt"));
+					ArrayList<ScoreData> sd = (ArrayList<ScoreData>) ois.readObject();
+					ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("data/data.txt"));
+					sd.add(new ScoreData(gameState.getPlayer().getScore()));
+					oos.writeObject(sd);
+					ois.close();
+					oos.close();
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				a.Destroy();
+				b.Destroy();
+
+				gameState.end();
+				State.changeState(new ScoreState());
+
 			}
 
-			a.Destroy();
-			b.Destroy();
 
-		}else{
-			if (a instanceof Player && b instanceof Laser){
+
+		}else if (a instanceof Player && b instanceof Laser){
 				gameState.playExplosion(getCenter());
 				a.Destroy();
 				b.Destroy();
-			}
+
+		}else if (a instanceof Meteor && b instanceof Laser){
+			gameState.playExplosion(getCenter());
+			a.Destroy();
+			b.Destroy();
+
 		}
+
 		
 
 

@@ -6,10 +6,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import model.gameObjects.Constants;
-import model.gameObjects.Alien;
-import model.gameObjects.MovingObject;
-import model.gameObjects.Player;
+import model.gameObjects.*;
 import model.threads.THAlien;
 import model.util.Animation;
 import ui.Assets;
@@ -27,15 +24,31 @@ public class GameState extends State {
 	public GameState() {
 		BufferedImage texture = Assets.player[(int)(Math.random()*Assets.player.length)];
 
+		movingObjects.add(new Meteor(new Vector2D(100, Constants.HEIGHT - 225), new Vector2D(0, 1), Constants.METEOR_VEL, Assets.meteors[0], this));
+
+		movingObjects.add(new Meteor(new Vector2D(Constants.WIDTH/2 - texture.getWidth()/2, Constants.HEIGHT - 225), new Vector2D(0, 1), Constants.METEOR_VEL, Assets.meteors[0], this));
+
+		movingObjects.add(new Meteor(new Vector2D(900, Constants.HEIGHT - 225), new Vector2D(0, 1), Constants.METEOR_VEL, Assets.meteors[0], this));
+
 		player = new Player(new Vector2D(Constants.WIDTH/2 - texture.getWidth()/2,
 				Constants.HEIGHT - texture.getHeight()*2.5), new Vector2D(), Constants.PLAYER_MAX_VEL, texture, this);
 
-		if(player != null){
-			movingObjects.add(player);
-		}
+		movingObjects.add(player);
+
 
 		aliens = (int) (Math.random()*(40-20)) + 20;
 		
+	}
+
+	public void end(){
+
+		for(THAlien th : THAliens){
+			th.stopThread(th.getAlien());
+		}
+
+		THAliens.clear();
+		movingObjects.clear();
+		explosions.clear();
 	}
 
 	public ArrayList startWave(Graphics g){
@@ -139,5 +152,13 @@ public class GameState extends State {
 
 	public Player getPlayer() {
 		return player;
+	}
+
+	public int getAliens(){
+		return aliens;
+	}
+
+	public void setAliens(int aliens) {
+		 this.aliens = aliens;
 	}
 }

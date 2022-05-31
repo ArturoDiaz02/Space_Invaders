@@ -24,14 +24,14 @@ public class THAlien extends Thread {
                     @Override
                     public void run() {
                         while (running) {
-                            double numeroAleatorio = (Math.random() * 100);
+                            double numerousAleatory = (Math.random() * 100);
 
-                            if (numeroAleatorio < 0.7) {
+                            if (numerousAleatory < 0.25) {
                                 alien.shoot();
                             }
 
                             try {
-                                Thread.sleep(3500);
+                                Thread.sleep(5000);
                             }catch (InterruptedException e){
                                 e.printStackTrace();
                             }
@@ -44,7 +44,7 @@ public class THAlien extends Thread {
 
 
             try {
-                Thread.sleep(20);
+                Thread.sleep(25);
             }catch (InterruptedException e){
                 e.printStackTrace();
             }
@@ -54,6 +54,10 @@ public class THAlien extends Thread {
 
     public void stopThread(MovingObject alien) {
         running = !(this.alien == alien);
+    }
+
+    public Alien getAlien() {
+        return alien;
     }
 
 

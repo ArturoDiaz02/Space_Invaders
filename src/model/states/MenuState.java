@@ -22,7 +22,7 @@ public class MenuState extends State {
 				Assets.greyBtn,
 				Assets.blueBtn,
 				Constants.WIDTH / 2 - Assets.greyBtn.getWidth()/2,
-				Constants.HEIGHT / 2 - Assets.greyBtn.getHeight(),
+				Constants.HEIGHT / 2 - Assets.greyBtn.getHeight() * 2,
 				Constants.PLAY,
 				new Action() {
 					@Override
@@ -44,7 +44,7 @@ public class MenuState extends State {
 				Assets.greyBtn,
 				Assets.blueBtn,
 				Constants.WIDTH / 2 - Assets.greyBtn.getWidth()/2,
-				Constants.HEIGHT / 2 + Assets.greyBtn.getHeight()/2 ,
+				Constants.HEIGHT / 2 + Assets.greyBtn.getHeight()* 2 ,
 				Constants.EXIT,
 				new Action() {
 					@Override
@@ -53,6 +53,20 @@ public class MenuState extends State {
 					}
 				}
 				));
+
+		buttons.add(new Button(
+				Assets.greyBtn,
+				Assets.blueBtn,
+				Constants.WIDTH / 2 - Assets.greyBtn.getWidth()/2,
+				Constants.HEIGHT / 2,
+				Constants.HIGH_SCORES,
+				new Action() {
+					@Override
+					public void doAction() {
+						State.changeState(new ScoreState());
+					}
+				}
+		));
 		
 	}
 	

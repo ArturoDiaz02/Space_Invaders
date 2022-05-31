@@ -4,14 +4,17 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import javax.swing.JFrame;
+import model.info.ScoreData;
 import model.gameObjects.Constants;
 import model.input.KeyBoard;
 import model.input.MouseInput;
 import model.states.GameState;
 import model.states.MenuState;
 import model.states.State;
-import model.threads.THAlien;
 
 public class Window extends JFrame implements Runnable{
 
@@ -103,7 +106,18 @@ public class Window extends JFrame implements Runnable{
 	private void init() {
 		Assets.init();
 		State.changeState(new MenuState());
+		//write();
 
+	}
+
+	private void write(){
+		try {
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("data/data.txt"));
+			oos.writeObject(new ArrayList<ScoreData>());
+			oos.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	

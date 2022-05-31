@@ -30,24 +30,22 @@ public class Alien extends MovingObject{
 	public void update() {
 
 		if(direction){
-			position = position.add(new Vector2D(5, 0));
+			position = position.add(new Vector2D(2, 0));
 
 			if(position.getX() > Constants.WIDTH){
-				position = position.add(new Vector2D(-5, height));
+				position = position.add(new Vector2D(-2, height));
 				direction = false;
 			}
 
 		}else{
-			position = position.add(new Vector2D(-5, 0));
+			position = position.add(new Vector2D(-2, 0));
 
 			if(position.getX() < -width){
-				position = position.add(new Vector2D(5, height));
+				position = position.add(new Vector2D(2, height));
 				direction = true;
 			}
 		}
 
-
-		
 	}
 
 	public void shoot(){
